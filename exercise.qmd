@@ -45,11 +45,13 @@ Complete the following data cleaning steps in the `penguins_df` dataframe:
 ```{r data-cleaning}
 
 # Remove missing values
-
+penguins_df <- penguins_df |>
+  drop_na()
 
 
 # Create length_mass column that measures length to mass ratio for each penguin
-
+penguins_df <- penguins_df |>
+  mutate(length_mass = flipper_length_mm / body_mass_g)
 ```
 
 ## Data Visualization
@@ -65,7 +67,21 @@ Use `ggplot` to make a visualization of your choice with the penguin data. Be su
 -   Comments!
 
 ```{r data-viz}
-
+ggplot(penguins_df, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point(size = 2) +
+  # Add in the title and axis labels
+  labs(
+    title = "Penguin Flipper Length vs Body Mass",
+    x = "Flipper Length (mm)",
+    y = "Body Mass (g)"
+  ) +
+  # Create a custom color palette for species
+  scale_color_manual(values = c("Adelie" = "darkseagreen3", "Chinstrap" = "darkslategray", "Gentoo" = "darkturquoise")) +
+  # Use a classic theme for the plot
+  theme_classic() +
+  # Take out the legend title
+  theme(legend.title = element_blank()) +
+  geom_smooth(method = "lm", se = FALSE, color = "black") # Adding a linear model line
 ```
 
 That's it! Head back to the README on the Github repo for submission instructions.
